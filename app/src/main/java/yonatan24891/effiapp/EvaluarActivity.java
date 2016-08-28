@@ -1,13 +1,20 @@
 package yonatan24891.effiapp;
 
 import android.app.ActivityManager;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -15,19 +22,19 @@ import java.util.logging.Logger;
 
 public class EvaluarActivity extends AppCompatActivity {
 
-    double DistanciaMinima(double x, ResourceData ABCD){
+    double DistanciaMinima(double x, ResourceData ABCD) {
 
-        return Math.min(Math.abs(x-ABCD.getMinRangoI()), Math.abs(x-ABCD.getMaxRangoI()));
+        return Math.min(Math.abs(x - ABCD.getMinRangoI()), Math.abs(x - ABCD.getMaxRangoI()));
     }
 
-    double normalizar (double x, ResourceData ABCD){
-        double valor=1;
+    double normalizar(double x, ResourceData ABCD) {
+        double valor = 1;
 
-        if (x>ABCD.getMinRango() && x< ABCD.getMinRangoI() && (ABCD.getMinRango()!=ABCD.getMinRangoI()))
-            valor=DistanciaMinima(x, ABCD)/(Math.abs(ABCD.getMinRango()-ABCD.getMinRangoI()));
+        if (x > ABCD.getMinRango() && x < ABCD.getMinRangoI() && (ABCD.getMinRango() != ABCD.getMinRangoI()))
+            valor = DistanciaMinima(x, ABCD) / (Math.abs(ABCD.getMinRango() - ABCD.getMinRangoI()));
 
-        else if (x>ABCD.getMaxRangoI() && x< ABCD.getMaxRango() && (ABCD.getMaxRangoI()!=ABCD.getMaxRango()))
-            valor=DistanciaMinima(x, ABCD)/(Math.abs(ABCD.getMaxRangoI()-ABCD.getMaxRango()));
+        else if (x > ABCD.getMaxRangoI() && x < ABCD.getMaxRango() && (ABCD.getMaxRangoI() != ABCD.getMaxRango()))
+            valor = DistanciaMinima(x, ABCD) / (Math.abs(ABCD.getMaxRangoI() - ABCD.getMaxRango()));
         return valor;
     }
 
@@ -90,7 +97,7 @@ public class EvaluarActivity extends AppCompatActivity {
         for (int i = 0; i < nTasks; i++) {
             //System.out.println(memoryInfo[i].getTotalPss()/1024.0);
             ram[i] = memoryInfo[i].getTotalPss() / 1024.0;
-            System.out.println("RAM: "+ram[i]);
+            System.out.println("RAM: " + ram[i]);
            /* System.out.println(memoryInfo[i].dalvikPrivateDirty);
             System.out.println(memoryInfo[i].otherPss);*/
         }
@@ -99,7 +106,7 @@ public class EvaluarActivity extends AppCompatActivity {
 
         for (int i = 0; i < nTasks; i++) {
             Random random = new Random();
-            cpu[i] = random.nextInt(13 - 1) + 1;
+            cpu[i] = random.nextFloat() * (13.0f - 1.0f) + 1.0f;
             System.out.println("CPU: " + cpu[i]);
         }
         //bateria
@@ -136,7 +143,6 @@ public class EvaluarActivity extends AppCompatActivity {
             System.out.println("nmedia: " + notaMedia[i]);
             System.out.println("ndescargas: " + nDescargas[i]);
         }
-
 
 
 //            Debug.MemoryInfo[] memory = activityManager.getProcessMemoryInfo(new int[]{parseInt((String) appObj.get("pid"))});
@@ -202,7 +208,6 @@ public class EvaluarActivity extends AppCompatActivity {
 //            }
 
 
-
         //TOMA DE DECISION MULTICRITERIO RIM
 
         double[][] matriz = new double[8][nTasks];
@@ -258,22 +263,80 @@ public class EvaluarActivity extends AppCompatActivity {
         }
 
         for (int j = 0; j < nTasks; j++) {
-            double iMinus=0, iMax=0;
-            for (int i = 0; i < recursos.length; i++){
-                iMax+=Math.pow(matriz[i][j]-recursos[i].getPeso(), 2);  // recursos de i o de j???
-                iMinus+=Math.pow(matriz[i][j], 2);
+            double iMinus = 0, iMax = 0;
+            for (int i = 0; i < recursos.length; i++) {
+                iMax += Math.pow(matriz[i][j] - recursos[i].getPeso(), 2);  // recursos de i o de j???
+                iMinus += Math.pow(matriz[i][j], 2);
             }
             System.out.println("IMAX: " + iMax);
             System.out.println("IMINUS: " + iMinus);
-            iMinus=Math.sqrt(iMinus);
-            iMax=Math.sqrt(iMax);
+            iMinus = Math.sqrt(iMinus);
+            iMax = Math.sqrt(iMax);
             System.out.println("SQRTI+: " + iMax);
             System.out.println("SQRTI-: " + iMinus);
-            r[j] = iMinus/(iMax+iMinus);
+            r[j] = iMinus / (iMax + iMinus);
         }
 
         for (int i = 0; i < nTasks; i++) {
             System.out.println("R: " + r[i]);
         }
+
+
+        final ListView listview = (ListView) findViewById(R.id.listView);
+        String[] values = new String[nTasks];
+
+        for (int i = 0; i < nTasks; i++) {
+            //values[i]=(nombres[i]+"         "+ ((int)(r[i]*100)));
+            values[i]=((int)(r[i]*100)) + "%    " + nombres[i];
+        }
+
+        final ArrayList<String> list = new ArrayList<String>();
+        for (int i = 0; i < values.length; ++i) {
+            list.add(values[i]);
+        }
+        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+        listview.setAdapter(adapter);
+
+//       //
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, final View view,
+//                                    int position, long id) {
+//                final String item = (String) parent.getItemAtPosition(position);
+//                view.animate().setDuration(2000).alpha(0)
+//                        .withEndAction(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                list.remove(item);
+//                                adapter.notifyDataSetChanged();
+//                                view.setAlpha(1);
+//                            }
+//                        });
+//            }
+//
+//        });
     }
+
+//    private class StableArrayAdapter extends ArrayAdapter<String> {
+//
+//        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+//
+//        public StableArrayAdapter(Context context, int textViewResourceId,
+//                                  List<String> objects) {
+//            super(context, textViewResourceId, objects);
+//            for (int i = 0; i < objects.size(); ++i) {
+//                mIdMap.put(objects.get(i), i);
+//            }
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            String item = getItem(position);
+//            return mIdMap.get(item);
+//        }
+//
+//        @Override
+//        public boolean hasStableIds() {
+//            return true;
+//        }
+//    }
 }
