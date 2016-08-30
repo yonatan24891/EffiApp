@@ -42,6 +42,11 @@ public class EvaluarActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goToMain(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
     double DistanciaMinima(double x, ResourceData ABCD) {
 
         return Math.min(Math.abs(x - ABCD.getMinRangoI()), Math.abs(x - ABCD.getMaxRangoI()));

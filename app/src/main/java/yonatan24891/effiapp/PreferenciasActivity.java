@@ -15,11 +15,11 @@ public class PreferenciasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferencias);
 
-        final ListView listview3 = (ListView) findViewById(R.id.listView3);
+        //final ListView listview3 = (ListView) findViewById(R.id.listView3);
 
-        final ArrayList<String> list3 = new ArrayList<String>(8);// get numero de caracteristicas
+        //final ArrayList<String> list3 = new ArrayList<String>(8);// get numero de caracteristicas
 
-        //list3.add()
+
 
     }
 

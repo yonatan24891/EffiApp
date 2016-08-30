@@ -1,7 +1,7 @@
 package yonatan24891.effiapp;
 
 /**
- * Created by miriam on 26/08/16.
+ * Created by jonathan on 26/08/16.
  */
 public class ResourceData {
 

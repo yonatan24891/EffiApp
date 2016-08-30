@@ -14,16 +14,180 @@
         android:layout_height="wrap_content"
         android:text="ACEPTAR"
         android:id="@+id/aceptarBt"
+        android:onClick="goToMain"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="56dp"
-        android:onClick="goToMain" />
+        android:layout_centerHorizontal="true" />
 
-    <ListView
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cpuSeekBar"
+        android:indeterminate="false"
+        android:layout_above="@+id/ramSeekBar"
+        android:layout_alignLeft="@+id/aceptarBt"
+        android:layout_alignStart="@+id/aceptarBt" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView3"
+        android:text="CPU"
+        android:id="@+id/cpuTxt"
+        android:textSize="20dp"
         android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ramSeekBar"
+        android:indeterminate="false"
+        android:layout_below="@+id/cpuTxt"
+        android:layout_alignLeft="@+id/cpuSeekBar"
+        android:layout_alignStart="@+id/cpuSeekBar"
+        android:layout_marginTop="15dp"
+        android:layout_alignRight="@+id/cpuSeekBar"
+        android:layout_alignEnd="@+id/cpuSeekBar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RAM"
+        android:id="@+id/ramTxt"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/ramSeekBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/BateriaSeekBar"
+        android:indeterminate="false"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/ramTxt"
+        android:layout_alignLeft="@+id/ramSeekBar"
+        android:layout_alignStart="@+id/ramSeekBar"
+        android:layout_alignRight="@+id/ramSeekBar"
+        android:layout_alignEnd="@+id/ramSeekBar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="bateria"
+        android:id="@+id/bateriaTxt"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/BateriaSeekBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notaMedSeekBar"
+        android:indeterminate="false"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/bateriaTxt"
+        android:layout_alignLeft="@+id/BateriaSeekBar"
+        android:layout_alignStart="@+id/BateriaSeekBar"
+        android:layout_alignRight="@+id/BateriaSeekBar"
+        android:layout_alignEnd="@+id/BateriaSeekBar" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nDescSeekBar"
+        android:indeterminate="false"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/notaMedSeekBar"
+        android:layout_alignLeft="@+id/notaMedSeekBar"
+        android:layout_alignStart="@+id/notaMedSeekBar"
+        android:layout_alignRight="@+id/notaMedSeekBar"
+        android:layout_alignEnd="@+id/notaMedSeekBar" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datosEnvSeekBar"
+        android:indeterminate="false"
+        android:layout_below="@+id/nDescSeekBar"
+        android:layout_alignLeft="@+id/nDescSeekBar"
+        android:layout_alignStart="@+id/nDescSeekBar"
+        android:layout_marginTop="21dp"
+        android:layout_alignRight="@+id/nDescSeekBar"
+        android:layout_alignEnd="@+id/nDescSeekBar" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datosRecSeekBar"
+        android:indeterminate="false"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/datosEnvSeekBar"
+        android:layout_alignLeft="@+id/datosEnvSeekBar"
+        android:layout_alignStart="@+id/datosEnvSeekBar"
+        android:layout_alignRight="@+id/datosEnvSeekBar"
+        android:layout_alignEnd="@+id/datosEnvSeekBar" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/capacidadSeekBar"
+        android:indeterminate="false"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/datosRecSeekBar"
+        android:layout_alignLeft="@+id/datosRecSeekBar"
+        android:layout_alignStart="@+id/datosRecSeekBar"
+        android:layout_alignRight="@+id/datosRecSeekBar"
+        android:layout_alignEnd="@+id/datosRecSeekBar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nota media"
+        android:id="@+id/notaMedTxt"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/notaMedSeekBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nº Descargas"
+        android:id="@+id/nDescTxt"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/nDescSeekBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Datos Env"
+        android:id="@+id/datosEnvTxt"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/datosEnvSeekBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Datos Rec"
+        android:id="@+id/datosRecTxt"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/datosRecSeekBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capacidad"
+        android:id="@+id/capacidadTxt"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/capacidadSeekBar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>
