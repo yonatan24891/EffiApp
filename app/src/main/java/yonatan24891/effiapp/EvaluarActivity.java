@@ -37,6 +37,18 @@ import java.util.logging.Logger;
 
 public class EvaluarActivity extends AppCompatActivity {
 
+    //RANGO DE TRABAJO Y RANGO IDEAL
+    static final ResourceData[] recursos = new ResourceData[]{
+            new ResourceData("CPU", 0, 100, 0, 8),
+            new ResourceData("RAM", 0, 1024, 0, 10),
+            new ResourceData("Bateria", 0, 100, 0, 10),
+            new ResourceData("NotaMedia", 0, 5, 4, 5),
+            new ResourceData("NDescargas", 0, 500000000, 100000, 500000000),
+            new ResourceData("DatosEnv", 0, 100, 0, 10),
+            new ResourceData("DatosRec", 0, 100, 0, 10),
+            new ResourceData("Capacidad", 0, 1000, 0, 50)
+    };
+
     public void goToEvaluar(View view) {
         Intent intent = new Intent(this, EvaluarActivity.class);
         startActivity(intent);
@@ -238,17 +250,7 @@ public class EvaluarActivity extends AppCompatActivity {
 
         //TOMA DE DECISION MULTICRITERIO RIM
 
-        //RANGO DE TRABAJO Y RANGO IDEAL
-        final ResourceData[] recursos = new ResourceData[]{
-                new ResourceData("CPU", 0, 100, 0, 8),
-                new ResourceData("RAM", 0, 1024, 0, 10),
-                new ResourceData("Bateria", 0, 100, 0, 10),
-                new ResourceData("NotaMedia", 0, 5, 4, 5),
-                new ResourceData("NDescargas", 0, 500000000, 100000, 500000000),
-                new ResourceData("DatosEnv", 0, 100, 0, 10),
-                new ResourceData("DatosRec", 0, 100, 0, 10),
-                new ResourceData("Capacidad", 0, 1000, 0, 50)
-        };
+
 
         //INICIALIZACIÓN DE LA MATRIZ
         double[][] matriz = new double[8][nTasks];

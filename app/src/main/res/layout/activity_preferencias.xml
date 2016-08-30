@@ -62,7 +62,7 @@
     <SeekBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/BateriaSeekBar"
+        android:id="@+id/bateriaSeekBar"
         android:indeterminate="false"
         android:layout_marginTop="17dp"
         android:layout_below="@+id/ramTxt"
@@ -77,7 +77,7 @@
         android:text="bateria"
         android:id="@+id/bateriaTxt"
         android:textSize="20dp"
-        android:layout_alignBottom="@+id/BateriaSeekBar"
+        android:layout_alignBottom="@+id/bateriaSeekBar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -88,10 +88,10 @@
         android:indeterminate="false"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/bateriaTxt"
-        android:layout_alignLeft="@+id/BateriaSeekBar"
-        android:layout_alignStart="@+id/BateriaSeekBar"
-        android:layout_alignRight="@+id/BateriaSeekBar"
-        android:layout_alignEnd="@+id/BateriaSeekBar" />
+        android:layout_alignLeft="@+id/bateriaSeekBar"
+        android:layout_alignStart="@+id/bateriaSeekBar"
+        android:layout_alignRight="@+id/bateriaSeekBar"
+        android:layout_alignEnd="@+id/bateriaSeekBar" />
 
     <SeekBar
         android:layout_width="wrap_content"
