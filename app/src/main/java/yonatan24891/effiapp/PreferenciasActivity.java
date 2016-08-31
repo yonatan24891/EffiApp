@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -58,6 +59,7 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoCpu = cpuSeekBar.getProgress();
+                        Toast.makeText(PreferenciasActivity.this,String.valueOf(cpuSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -76,6 +78,7 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoRam = ramSeekBar.getProgress();
+                        Toast.makeText(PreferenciasActivity.this,String.valueOf(ramSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -94,6 +97,7 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoBateria = bateriaSeekBar.getProgress();
+                        Toast.makeText(PreferenciasActivity.this,String.valueOf(bateriaSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -112,6 +116,7 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoNotaMed = notaMedSeekBar.getProgress();
+                        Toast.makeText(PreferenciasActivity.this,String.valueOf(notaMedSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -130,6 +135,7 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoNDesc = nDescSeekBar.getProgress();
+                        Toast.makeText(PreferenciasActivity.this,String.valueOf(nDescSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -148,6 +154,7 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoDatosEnv = datosEnvSeekBar.getProgress();
+                        Toast.makeText(PreferenciasActivity.this,String.valueOf(datosEnvSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -166,6 +173,7 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoDatosRec = datosRecSeekBar.getProgress();
+                        Toast.makeText(PreferenciasActivity.this,String.valueOf(datosRecSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -184,6 +192,7 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoCapacidad = capacidadSeekBar.getProgress();
+                        Toast.makeText(PreferenciasActivity.this,String.valueOf(capacidadSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -193,21 +202,22 @@ public class PreferenciasActivity extends AppCompatActivity {
     }
 
 
-
-
     public void goToMain(View view) {
 
 
         int pesoTotal= pesoCpu+pesoRam+pesoBateria+pesoCapacidad+pesoDatosEnv+pesoDatosRec+pesoNDesc+pesoNotaMed;
 
-        EvaluarActivity.recursos[0].setPeso((float)pesoCpu/pesoTotal);
-        EvaluarActivity.recursos[1].setPeso((float)pesoRam/pesoTotal);
-        EvaluarActivity.recursos[2].setPeso((float)pesoBateria/pesoTotal);
-        EvaluarActivity.recursos[3].setPeso((float)pesoNotaMed/pesoTotal);
-        EvaluarActivity.recursos[4].setPeso((float)pesoNDesc/pesoTotal);
-        EvaluarActivity.recursos[5].setPeso((float)pesoDatosEnv/pesoTotal);
-        EvaluarActivity.recursos[6].setPeso((float)pesoDatosRec/pesoTotal);
-        EvaluarActivity.recursos[7].setPeso((float)pesoCapacidad/pesoTotal);
+        if (pesoTotal!=0) {
+            EvaluarActivity.recursos[0].setPeso((float) pesoCpu / pesoTotal);
+            EvaluarActivity.recursos[1].setPeso((float) pesoRam / pesoTotal);
+            EvaluarActivity.recursos[2].setPeso((float) pesoBateria / pesoTotal);
+            EvaluarActivity.recursos[3].setPeso((float) pesoNotaMed / pesoTotal);
+            EvaluarActivity.recursos[4].setPeso((float) pesoNDesc / pesoTotal);
+            EvaluarActivity.recursos[5].setPeso((float) pesoDatosEnv / pesoTotal);
+            EvaluarActivity.recursos[6].setPeso((float) pesoDatosRec / pesoTotal);
+            EvaluarActivity.recursos[7].setPeso((float) pesoCapacidad / pesoTotal);
+        }
+
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

@@ -2,32 +2,21 @@ package yonatan24891.effiapp;
 
 import android.app.ActivityManager;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Debug;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.net.TrafficStats;
 import android.os.Bundle;
-import android.view.MenuInflater;
+import android.os.Debug;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -36,6 +25,10 @@ import java.util.logging.Logger;
 
 
 public class EvaluarActivity extends AppCompatActivity {
+
+
+
+
 
     //RANGO DE TRABAJO Y RANGO IDEAL
     static final ResourceData[] recursos = new ResourceData[]{
@@ -53,6 +46,8 @@ public class EvaluarActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EvaluarActivity.class);
         startActivity(intent);
     }
+
+
 
     public void goToMain(View view) {
         Intent intent = new Intent(this, MainActivity.class);
@@ -84,10 +79,12 @@ public class EvaluarActivity extends AppCompatActivity {
         ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
         // The first in the list of RunningTasks is always the foreground task.
         List<ActivityManager.RunningTaskInfo> foregroundTaskInfo = am.getRunningTasks(10);
-        final int nTasks = foregroundTaskInfo.size();
-        int[] taskIds = new int[nTasks];
         List<ActivityManager.RunningAppProcessInfo> foregroundAppProcessesInfo = am.getRunningAppProcesses();
+
+        final int nTasks = foregroundTaskInfo.size();
         int[] ProcessesIds = new int[nTasks];
+        int[] taskIds = new int[nTasks];
+        int[] usersIds = new int[nTasks];
         final String[] nombres = new String[nTasks];
         final double[] ram = new double[nTasks];
         final double[] cpu = new double[nTasks];
@@ -99,12 +96,16 @@ public class EvaluarActivity extends AppCompatActivity {
         final double[] capacidad = new double[nTasks];
         final double[] r = new double[nTasks];
 
+
+        //System.out.println(foregroundAppProcessesInfo.get(0));
+
         //PROCESSES
         for (int i = 0; i < nTasks; i++) {
             ActivityManager.RunningAppProcessInfo process = foregroundAppProcessesInfo.get(i);
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Task: {0}", process.toString());
 
             ProcessesIds[i] = process.pid;
+            usersIds[i] = process.uid;
             //System.out.println(process.processName);
         }
 
@@ -154,14 +155,18 @@ public class EvaluarActivity extends AppCompatActivity {
             Random random = new Random();
             bateria[i] = random.nextFloat() * (30.0f - 10.0f) + 10.0f;
             System.out.println("bateria: " + bateria[i]);
+
+            //String pid = "yourpid" BufferedReader reader = new BufferedReader ( new InputStreamReader ( new FileInputStream ( "ls -ld /proc/"+pid)) , 1000 );
         }
 
 
         //datos
         for (int i = 0; i < nTasks; i++) {
-            Random random = new Random();
-            datosEnv[i] = random.nextInt(15 - 2) + 2;
-            datosRec[i] = random.nextInt(15 - 2) + 2;
+            //Random random = new Random();
+            //datosEnv[i] = random.nextInt(15 - 2) + 2;
+            datosEnv[i] = (TrafficStats.getUidTxBytes(usersIds[i]))/1024;
+            //datosRec[i] = random.nextInt(15 - 2) + 2;
+            datosRec[i] = (TrafficStats.getUidRxBytes(usersIds[i]))/1024;
             System.out.println("datosE: " + datosEnv[i]);
             System.out.println("datosR: " + datosRec[i]);
         }
@@ -351,6 +356,16 @@ public class EvaluarActivity extends AppCompatActivity {
                 listview2.setAdapter(adapter2);
 
                 dialog.show();
+
+
+                final Button button = (Button) dialog.findViewById(R.id.aceptarBt);
+                System.out.println(button);
+                button.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        dialog.hide();
+                    }
+                });
+
 
 //                final String item = (String) parent.getItemAtPosition(position);
 //                view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {

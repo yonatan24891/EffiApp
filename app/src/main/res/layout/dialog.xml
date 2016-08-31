@@ -29,7 +29,6 @@
         android:id="@+id/aceptarBt"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="goToEvaluar"/>
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
 
