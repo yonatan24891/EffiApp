@@ -1,12 +1,14 @@
 package yonatan24891.effiapp;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Toast;
+
 
 import java.util.ArrayList;
 
@@ -59,7 +61,16 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoCpu = cpuSeekBar.getProgress();
-                        Toast.makeText(PreferenciasActivity.this,String.valueOf(cpuSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
+                        final Toast toast = Toast.makeText(PreferenciasActivity.this,String.valueOf(cpuSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                                System.out.println("fgdfgd");
+                            }
+                        },500);
                     }
                 }
         );
@@ -78,7 +89,16 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoRam = ramSeekBar.getProgress();
-                        Toast.makeText(PreferenciasActivity.this,String.valueOf(ramSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
+                        final Toast toast = Toast.makeText(PreferenciasActivity.this,String.valueOf(ramSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                                System.out.println("fgdfgd");
+                            }
+                        },500);
                     }
                 }
         );
@@ -97,7 +117,16 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoBateria = bateriaSeekBar.getProgress();
-                        Toast.makeText(PreferenciasActivity.this,String.valueOf(bateriaSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
+                        final Toast toast = Toast.makeText(PreferenciasActivity.this,String.valueOf(bateriaSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                                System.out.println("fgdfgd");
+                            }
+                        },500);
                     }
                 }
         );
@@ -116,7 +145,16 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoNotaMed = notaMedSeekBar.getProgress();
-                        Toast.makeText(PreferenciasActivity.this,String.valueOf(notaMedSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
+                        final Toast toast = Toast.makeText(PreferenciasActivity.this,String.valueOf(notaMedSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                                System.out.println("fgdfgd");
+                            }
+                        },500);
                     }
                 }
         );
@@ -135,7 +173,16 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoNDesc = nDescSeekBar.getProgress();
-                        Toast.makeText(PreferenciasActivity.this,String.valueOf(nDescSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
+                        final Toast toast = Toast.makeText(PreferenciasActivity.this,String.valueOf(nDescSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                                System.out.println("fgdfgd");
+                            }
+                        },500);
                     }
                 }
         );
@@ -154,7 +201,16 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoDatosEnv = datosEnvSeekBar.getProgress();
-                        Toast.makeText(PreferenciasActivity.this,String.valueOf(datosEnvSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
+                        final Toast toast = Toast.makeText(PreferenciasActivity.this,String.valueOf(datosEnvSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                                System.out.println("fgdfgd");
+                            }
+                        },500);
                     }
                 }
         );
@@ -173,7 +229,16 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoDatosRec = datosRecSeekBar.getProgress();
-                        Toast.makeText(PreferenciasActivity.this,String.valueOf(datosRecSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
+                        final Toast toast = Toast.makeText(PreferenciasActivity.this,String.valueOf(datosRecSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                                System.out.println("fgdfgd");
+                            }
+                        },500);
                     }
                 }
         );
@@ -192,7 +257,16 @@ public class PreferenciasActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         pesoCapacidad = capacidadSeekBar.getProgress();
-                        Toast.makeText(PreferenciasActivity.this,String.valueOf(capacidadSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT).show();
+                        final Toast toast = Toast.makeText(PreferenciasActivity.this,String.valueOf(capacidadSeekBar.getProgress()+ "%"),Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                                System.out.println("fgdfgd");
+                            }
+                        },500);
                     }
                 }
         );
