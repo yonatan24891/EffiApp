@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.TrafficStats;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
@@ -85,6 +87,7 @@ public class EvaluarActivity extends AppCompatActivity {
         int[] ProcessesIds = new int[nTasks];
         int[] taskIds = new int[nTasks];
         int[] usersIds = new int[nTasks];
+        final String[] packageNames = new String[nTasks];
         final String[] nombres = new String[nTasks];
         final double[] ram = new double[nTasks];
         final double[] cpu = new double[nTasks];
@@ -125,8 +128,10 @@ public class EvaluarActivity extends AppCompatActivity {
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
+
             String foregroundTaskAppName = foregroundAppPackageInfo.applicationInfo.loadLabel(pm).toString();
             nombres[i] = foregroundTaskAppName;
+            packageNames[i] = task.baseActivity.getPackageName();
             System.out.println(nombres[i]);
         }
 
@@ -190,25 +195,10 @@ public class EvaluarActivity extends AppCompatActivity {
         }
 
 
-//            Debug.MemoryInfo[] memory = activityManager.getProcessMemoryInfo(new int[]{parseInt((String) appObj.get("pid"))});
-//            /** De esta manera, obtenemos el consumo de memoria RAM según http://developer.android.com/tools/debugging/debugging-memory.html#TrackAllocations **/
-//            appObj.put("ram", memory[0].getTotalPss());
-//            Log.d("TOTAL RAM", String.valueOf(memory[0].getTotalPss()));
+//
 //            double cpuUsage = tool.readCPUusagePerProcess(parseInt((String) appObj.get("pid")));
 //            //Obtenemos el tráfico de datos
-//            received[0] = TrafficStats.getUidRxBytes(Integer.parseInt((appObj.getString("uid"))));  //Obtenemos la cantidad de datos recibidos
-//            //Log.d("received BEFORE IF", String.valueOf(received[0]));
-//            send[0] = TrafficStats.getUidTxBytes(Integer.parseInt(appObj.getString("uid")));    //Obtenemos la cantidad de datos enviados
-//            //Log.d("sent BEFORE IF", String.valueOf(send[0]));
-//            if(received[0] == -1) {
-//                received[0] = 0;
-//            }
-//            if(send[0] == -1) {
-//                send[0] = 0;
-//            }
 //
-//            receivedData = received[0]/1024;
-//            sentData = send[0]/1024;
 
 //            public double readCPUusagePerProcess(int pid) {
 //                try {
@@ -312,6 +302,7 @@ public class EvaluarActivity extends AppCompatActivity {
         final String[] values2 = new String[] {"","","","","","","",""};
         list2.addAll(Arrays.asList(values2));
 
+
         for (int i = 0; i < nTasks; i++) {
             values[i]=((int)(r[i]*100)) + "%    " + nombres[i];
         }
@@ -320,6 +311,8 @@ public class EvaluarActivity extends AppCompatActivity {
         for (int i = 0; i < values.length; ++i) {
             list.add(values[i]);
         }
+
+
 
         final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
@@ -331,7 +324,7 @@ public class EvaluarActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
 
                 dialog.setContentView(R.layout.dialog);
                 dialog.setTitle( nombres[position]);
@@ -359,13 +352,23 @@ public class EvaluarActivity extends AppCompatActivity {
 
 
                 final Button button = (Button) dialog.findViewById(R.id.aceptarBt);
-                System.out.println(button);
+                //System.out.println(button);
                 button.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         dialog.hide();
                     }
                 });
 
+                final Button desinstalar = (Button) dialog.findViewById(R.id.desinstalarBt);
+                desinstalar.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        //Uri packageURI = Uri.parse("package:"+"your.packagename.here");
+                        Uri packageURI = Uri.parse("package:"+packageNames[position]);
+                        Intent uninstallIntent = new Intent(Intent.ACTION_DELETE, packageURI);
+                        startActivity(uninstallIntent);
+
+                    }
+                });
 
 //                final String item = (String) parent.getItemAtPosition(position);
 //                view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
