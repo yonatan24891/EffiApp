@@ -3,14 +3,18 @@ package yonatan24891.effiapp;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageStats;
 import android.graphics.Color;
 import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,11 +22,13 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -114,10 +120,12 @@ public class EvaluarActivity extends AppCompatActivity {
         final double[] r = new double[nTasks];
         BufferedReader reader;
         String[] sa;
-        long total, work, workBefore, workAM, workAMBefore;
+        long total, work, workAM;
 
 
         //System.out.println(foregroundAppProcessesInfo.get(0));
+
+        //ANDROID 5.1.1 AND ABOVE http://stackoverflow.com/questions/30619349/android-5-1-1-and-above-getrunningappprocesses-returns-my-application-packag
 
         //PROCESSES
         for (int i = 0; i < nTasks; i++) {
@@ -140,8 +148,10 @@ public class EvaluarActivity extends AppCompatActivity {
             String foregroundTaskPackageName = task.baseActivity.getPackageName();
             PackageManager pm = this.getPackageManager();
             PackageInfo foregroundAppPackageInfo = null;
+
             try {
                 foregroundAppPackageInfo = pm.getPackageInfo(foregroundTaskPackageName, 0);
+
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
@@ -150,7 +160,19 @@ public class EvaluarActivity extends AppCompatActivity {
             nombres[i] = foregroundTaskAppName;
             packageNames[i] = task.baseActivity.getPackageName();
             System.out.println(nombres[i]);
+
+            //CAPACIDAD
+            try {
+                ApplicationInfo applicationInfo = pm.getApplicationInfo(packageNames[i], 0);
+                File file = new File(applicationInfo.sourceDir);
+                capacidad[i] = file.length()/100000.0;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
         }
+
+
+
 
 
         //CPU
@@ -175,11 +197,8 @@ public class EvaluarActivity extends AppCompatActivity {
 
             } catch (IOException e) {
             e.printStackTrace();
-        }
+            }
 
-            //Random random = new Random();
-           // cpu[i] = random.nextFloat() * (13.0f - 1.0f) + 1.0f;
-           // System.out.println("CPU: " + cpu[i]);
         }
 
 
@@ -200,8 +219,6 @@ public class EvaluarActivity extends AppCompatActivity {
             Random random = new Random();
             bateria[i] = random.nextFloat() * (30.0f - 10.0f) + 10.0f;
             System.out.println("bateria: " + bateria[i]);
-
-            //String pid = "yourpid" BufferedReader reader = new BufferedReader ( new InputStreamReader ( new FileInputStream ( "ls -ld /proc/"+pid)) , 1000 );
         }
 
 
@@ -217,12 +234,6 @@ public class EvaluarActivity extends AppCompatActivity {
         }
 
 
-        //capacidad
-        for (int i = 0; i < nTasks; i++) {
-            Random random = new Random();
-            capacidad[i] = random.nextFloat() * (300.0f - 50.0f) + 50.0f;
-            System.out.println("capacidad: " + capacidad[i]);
-        }
 
 
         //nota media y descargas
