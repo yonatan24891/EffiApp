@@ -17,9 +17,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,6 +56,13 @@ public class EvaluarActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private float restrictPercentage(float percentage) {
+        if (percentage > 100)
+            return 100;
+        else if (percentage < 0)
+            return 0;
+        else return percentage;
+    }
 
 
     public void goToMain(View view) {
@@ -98,6 +112,9 @@ public class EvaluarActivity extends AppCompatActivity {
         final double[] datosRec = new double[nTasks];
         final double[] capacidad = new double[nTasks];
         final double[] r = new double[nTasks];
+        BufferedReader reader;
+        String[] sa;
+        long total, work, workBefore, workAM, workAMBefore;
 
 
         //System.out.println(foregroundAppProcessesInfo.get(0));
@@ -137,12 +154,35 @@ public class EvaluarActivity extends AppCompatActivity {
 
 
         //CPU
-
         for (int i = 0; i < nTasks; i++) {
-            Random random = new Random();
-            cpu[i] = random.nextFloat() * (13.0f - 1.0f) + 1.0f;
-            System.out.println("CPU: " + cpu[i]);
+
+            try {
+
+                reader = new BufferedReader(new FileReader("/proc/stat"));
+                sa = reader.readLine().split("[ ]+", 9);
+                work = Long.parseLong(sa[1]) + Long.parseLong(sa[2]) + Long.parseLong(sa[3]);
+                total = work + Long.parseLong(sa[4]) + Long.parseLong(sa[5]) + Long.parseLong(sa[6]) + Long.parseLong(sa[7]);
+                reader.close();
+
+                reader = new BufferedReader(new FileReader("/proc/" + ProcessesIds[i] + "/stat"));
+                sa = reader.readLine().split("[ ]+", 18);
+                workAM  = Long.parseLong(sa[13]) + Long.parseLong(sa[14]) + Long.parseLong(sa[15]) + Long.parseLong(sa[16]);
+                reader.close();
+
+
+                cpu[i] = restrictPercentage(workAM * 1000 / (float) total);
+
+
+            } catch (IOException e) {
+            e.printStackTrace();
         }
+
+            //Random random = new Random();
+           // cpu[i] = random.nextFloat() * (13.0f - 1.0f) + 1.0f;
+           // System.out.println("CPU: " + cpu[i]);
+        }
+
+
 
         //RAM
         Debug.MemoryInfo[] memoryInfo = am.getProcessMemoryInfo(ProcessesIds);
@@ -193,54 +233,6 @@ public class EvaluarActivity extends AppCompatActivity {
             System.out.println("nmedia: " + notaMedia[i]);
             System.out.println("ndescargas: " + nDescargas[i]);
         }
-
-
-//
-//            double cpuUsage = tool.readCPUusagePerProcess(parseInt((String) appObj.get("pid")));
-//            //Obtenemos el tráfico de datos
-//
-
-//            public double readCPUusagePerProcess(int pid) {
-//                try {
-//
-//                    RandomAccessFile readerCPUproc = new RandomAccessFile("proc/"+ pid +"/stat", "r");
-//                    String loadCPUproc = readerCPUproc.readLine();
-//                    //Log.d("FILE with the stats: ", loadCPUproc);
-//                    String[] columnsCPUproc = loadCPUproc.split(" +");
-//
-//                    long utimeCPUproc = Long.parseLong(columnsCPUproc[13]); //utime - CPU time spent in user code, measured in clock ticks
-//                    //Log.d("utime", String.valueOf(utimeCPUproc));
-//                    long stimeCPUproc = Long.parseLong(columnsCPUproc[14]);   //CPU time spent in kernel code, measured in clock ticks
-//                    //Log.d("stime", String.valueOf(stimeCPUproc));
-//                    long cutimeCPUproc = Long.parseLong(columnsCPUproc[17]);   //Waited-for children's CPU time spent in user code (in clock ticks)
-//                    long cstimeCPUproc = Long.parseLong(columnsCPUproc[16]);   //Waited-for children's CPU time spent in kernel code (in clock ticks)
-//                    long starttimeCPUproc = Long.parseLong(columnsCPUproc[21]);    //Time when the process started, measured in clock ticks
-//                    //RandomAccessFile hertzReader = new RandomAccessFile("/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq", "r");
-//                    //String loadHertz = hertzReader.readLine();
-//                    long hertz = 100; //Long.parseLong(loadHertz); //Number of clock ticks (HERTZ), under assumption of an unmodified Android system
-//                    //Log.d("Hertz", String.valueOf(hertz));
-//                    long totalTime = utimeCPUproc + stimeCPUproc;   //Tiempo total de uso de la CPU por el proceso
-//                    //totalTime = totalTime + cutimeCPUproc + cstimeCPUproc;  //Añadimos al total el tiempo de uso de CPU de los procesos hijo del proceso analizado
-//                    RandomAccessFile uptimeReader = new RandomAccessFile("proc/uptime", "r");
-//                    String loadUptime = uptimeReader.readLine();
-//                    //Log.d("uptime FILE: ", loadUptime);
-//                    String[] valuesUptimeReader = loadUptime.split(" +");
-//                    double uptime = Double.parseDouble(valuesUptimeReader[0]);   //The uptime of the system (seconds)
-//                    //Log.d("UPTIME", String.valueOf(uptime));
-//                    //Log.d("STARTTIME", String.valueOf(starttimeCPUproc));
-//                    //Log.d("TOTALTIME", String.valueOf(totalTime));
-//                    double seconds = (uptime - (starttimeCPUproc / hertz)); //Total elapsed time in seconds since the process started
-//                    double cpu_usage = 100 * ((totalTime / hertz) / seconds); //Total CPU usage in percentage
-//                    //Log.d("SECONDS", String.valueOf(seconds));
-//                    //Log.d("CPU_USAGE", String.valueOf(cpu_usage));
-//                    return cpu_usage;
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                return 7;
-//            }
 
 
         //TOMA DE DECISION MULTICRITERIO RIM
